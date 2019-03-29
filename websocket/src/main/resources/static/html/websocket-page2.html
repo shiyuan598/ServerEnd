@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>websocket-recive</title>
+    <script src="../js/config.js"></script>
+</head>
+<body>
+<h1>Lorem ipsum dolor sit amet, consectetur.</h1>
+<div><input type="text" id="message" value="聊两句试试"><input type="button" id="sendbtn" value="发送"></div>
+<div><input type="textarea" id="res"></div>
+</body>
+</html>
+<script>
+    var userid = "user001",
+        socketId = userid + "gis";
+    window.onload = function () {
+        var websocket = null;
+        websocket = new WebSocket(config.socketRootUrl + socketId);
+        websocket.onopen = function () {
+            console.log("WebSocket打开连接");
+        }
+        websocket.onclose = function () {
+            console.log("WebSocket关闭连接");
+        }
+        websocket.onerror = function () {
+            console.log("WebSocket连接错误");
+        }
+        websocket.onmessage = function (event) {
+            var data = event.data;
+            console.log("WebSocket连接返回：" + data);
+            document.getElementById("res").value = JSON.parse(data).message.value;
+        }
+
+        document.getElementById("sendbtn").onclick = function () {
+            var message = {
+                sender: socketId,
+                value: document.getElementById('message').value
+            };
+            var data = {
+                receiver: userid,
+                message: message
+            };
+            websocket.send(JSON.stringify(data));
+        }
+
+        window.onbeforeunload = function () { //主动关闭websocket
+            websocket.close();
+        }
+    };
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
