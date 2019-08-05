@@ -1,7 +1,6 @@
 let xlsx = require('node-xlsx')
 let fs = require('fs')
-let data = [
-  {
+let data = [{
     name: 'sheet1',
     data: [
       [
@@ -41,13 +40,18 @@ let data = [
 ]
 
 let buffer = xlsx.build(data)
-fs.writeFile('./write.xls', buffer, function(err) {
+fs.writeFile('./write.xls', buffer, function (err) {
   if (err) {
     console.info(err)
   } else {
     console.log('write success!')
-    //读出来
-    var obj = xlsx.parse('./write.xls')
-    console.info(JSON.stringify(obj))
+    //再读出来
+    try {
+      let obj = xlsx.parse('./write.xls')
+      console.info(JSON.stringify(obj))
+    } catch (err) {
+      console.info(err)
+    }
+
   }
 })
