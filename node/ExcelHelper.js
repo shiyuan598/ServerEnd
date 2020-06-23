@@ -52,6 +52,5 @@ fs.writeFile('./write.xls', buffer, function (err) {
     } catch (err) {
       console.info(err)
     }
-
   }
 })
